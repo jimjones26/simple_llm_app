@@ -31,6 +31,11 @@ prompt_template = ChatPromptTemplate.from_messages(
     [("system", system_template), ("user", "{text}")]
 )
 
-result = prompt_template.invoke({"language": "german", "text": "what is your name?"})
+result = prompt_template.invoke({"language": "italian", "text": "hi"})
 
 result.to_messages()
+
+chain = prompt_template | model | parser
+
+chain.invoke({"language": "italian", "text": "hi"})
+chain.invoke({"language": "spanish", "text": "Im so hungry I could eat a horse!"})
