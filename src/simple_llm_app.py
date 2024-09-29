@@ -1,6 +1,7 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 
 model = ChatOllama(
     model="llama3.2:3b-instruct-q8_0",
@@ -23,3 +24,13 @@ parser.invoke(result)
 chain = model | parser
 
 chain.invoke(messages)
+
+system_template = "Translate the following into {language}:"
+
+prompt_template = ChatPromptTemplate.from_messages(
+    [("system", system_template), ("user", "{text}")]
+)
+
+result = prompt_template.invoke({"language": "german", "text": "what is your name?"})
+
+result.to_messages()
