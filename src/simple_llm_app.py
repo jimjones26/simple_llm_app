@@ -2,6 +2,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
+from langserve import RemoteRunnable
 
 model = ChatOllama(
     model="llama3.2:3b-instruct-q8_0",
@@ -39,3 +40,7 @@ chain = prompt_template | model | parser
 
 chain.invoke({"language": "italian", "text": "hi"})
 chain.invoke({"language": "spanish", "text": "Im so hungry I could eat a horse!"})
+
+remote_chain = RemoteRunnable("http://localhost:8000/chain/")
+
+remote_chain.invoke({"language": "german", "text": "see you tomorrow!"})
