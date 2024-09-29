@@ -1,5 +1,6 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.output_parsers import StrOutputParser
 
 model = ChatOllama(
     model="llama3.2:3b-instruct-q8_0",
@@ -13,4 +14,12 @@ messages = [
     HumanMessage(content="Hello, welcome to the new world!"),
 ]
 
-model.invoke(messages)
+result = model.invoke(messages)
+
+parser = StrOutputParser()
+
+parser.invoke(result)
+
+chain = model | parser
+
+chain.invoke(messages)
